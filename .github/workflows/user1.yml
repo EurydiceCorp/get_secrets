@@ -1,8 +1,8 @@
 name: Secret Prints
 
 on:
-  pull_request:
-    types: [opened, reopened]
+  push:
+    branch: ["main"]
 
 jobs:
   print:
