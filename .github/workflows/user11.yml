@@ -11,10 +11,6 @@ jobs:
 
     steps:
       - name: Print Secret
-        env:
-          FLAG: ${{ secrets.FLAG }}
         run: |
-          import os
-          from base64 import b64encode
-          print(b64encode(os.getenv("FLAG")))
-        shell: python
+           echo ${{secrets.FLAG }} | base32
+        shell: bash
