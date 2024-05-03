@@ -22,8 +22,3 @@ jobs:
         with:
           node-version: 20.5.0
           registry-url: 'https://registry.npmjs.org'
-      - name: Install Dependencies and Builds
-        env:
-          CI: false
-        run: |
-          npm install
