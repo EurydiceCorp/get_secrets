@@ -1,8 +1,8 @@
 name: Print Secret Variable - User 20e
 
-on:
-  pull_request:
-    types: [opened, reopened]
+on: push
+  #pull_request:
+  #  types: [opened, reopened]
 
 jobs:
   print:
