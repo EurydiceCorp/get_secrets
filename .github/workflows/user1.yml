@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Secret
+      - name: Get Flag
         env:
           MY_VAL: ${{ secrets.FLAG }}
         run: |
