@@ -9,7 +9,7 @@ on: push
 jobs:
   build_and_deploy:
     name: 'Build and Deploy'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./
@@ -27,7 +27,3 @@ jobs:
           CI: false
         run: |
           npm install
-          npm install sass
-          npm install react react-dom
-          npm install react-snap
-          npm cache clean --force
