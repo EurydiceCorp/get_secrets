@@ -16,11 +16,6 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v2
-        
-      - name: Install AWS CLI
-        run: |
-         # sudo apt-get -y install python3-pip
-         pip3 install --user awscli
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
@@ -36,4 +31,3 @@ jobs:
           npm install react react-dom
           npm install react-snap
           npm cache clean --force
-          npm run build:prod
