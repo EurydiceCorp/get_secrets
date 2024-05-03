@@ -1,56 +1,39 @@
-name: Choice parameter test
+name: ci-frontend
 
-on:
-  workflow_dispatch:
-    inputs:
-      choice:
-        type: choice
-        description: Make a choice
-        options:
-          - accruedInterest
-          - administration
-          - dashboard
-          - dbSetup
-          - emailService
-          - fileService
-          - plaid
-          - preTokenGeneration
-          - reports
-          - request
-          - xlsxService
+on: push
+  #  push:
+  #    branches:
+  #      - Master
+
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  build_and_deploy:
+    name: 'Build and Deploy'
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: ./
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Check out
+        uses: actions/checkout@v2
+        
+      - name: Install AWS CLI
+        run: |
+         # sudo apt-get -y install python3-pip
+         pip3 install --user awscli
 
-    - name: Run service
-      run: echo "Running service ${{ github.event.inputs.choice }}"
-
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set execute permissions for publish-win.sh
-      run: |
-        cd ${{ github.event.inputs.choice }}
-        chmod +x publish-win.sh
-      shell: bash
-
-    - name: Run publish-win.sh
-      run: |
-        cd ${{ github.event.inputs.choice }}
-        ./publish-win.sh
-      shell: bash
-
-    - name: Deploy ${{ github.event.inputs.service }} to Lambda
-      run: |
-        cd ${{ github.event.inputs.choice }}/build
-        aws lambda update-function-code \
-          --function-name AccruedInterestLambdaFunction \
-          --zip-file fileb://${{ github.event.inputs.choice }}.zip \
-          --region us-east-1
-      env:
-        AWS_REGION: us-east-1
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 20.5.0
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install Dependencies and Builds
+        env:
+          CI: false
+        run: |
+          npm install
+          npm install sass
+          npm install react react-dom
+          npm install react-snap
+          npm cache clean --force
+          npm run build:prod
