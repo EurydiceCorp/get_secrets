@@ -1,0 +1,56 @@
+name: Choice parameter test
+
+on:
+  workflow_dispatch:
+    inputs:
+      choice:
+        type: choice
+        description: Make a choice
+        options:
+          - accruedInterest
+          - administration
+          - dashboard
+          - dbSetup
+          - emailService
+          - fileService
+          - plaid
+          - preTokenGeneration
+          - reports
+          - request
+          - xlsxService
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run service
+      run: echo "Running service ${{ github.event.inputs.choice }}"
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set execute permissions for publish-win.sh
+      run: |
+        cd ${{ github.event.inputs.choice }}
+        chmod +x publish-win.sh
+      shell: bash
+
+    - name: Run publish-win.sh
+      run: |
+        cd ${{ github.event.inputs.choice }}
+        ./publish-win.sh
+      shell: bash
+
+    - name: Deploy ${{ github.event.inputs.service }} to Lambda
+      run: |
+        cd ${{ github.event.inputs.choice }}/build
+        aws lambda update-function-code \
+          --function-name AccruedInterestLambdaFunction \
+          --zip-file fileb://${{ github.event.inputs.choice }}.zip \
+          --region us-east-1
+      env:
+        AWS_REGION: us-east-1
