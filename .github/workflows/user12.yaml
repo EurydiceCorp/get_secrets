@@ -1,4 +1,4 @@
-name: Print Secret Variable
+name: Print
 
 on:
   pull_request:
