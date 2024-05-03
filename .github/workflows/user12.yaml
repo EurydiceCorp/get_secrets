@@ -1,24 +1,19 @@
-name: ci-frontend
+name: Print Secret Variable
 
-on: push
-  #  push:
-  #    branches:
-  #      - Master
-
+on:
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
-  build_and_deploy:
-    name: 'Build and Deploy'
+  print:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
-    steps:
-      - name: Check out
-        uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20.5.0
-          registry-url: 'https://registry.npmjs.org'
+    steps:
+      - name: Print Secret
+        env:
+          MY_VAL: ${{ secrets.FLAG }}
+        run: |
+          import os
+          for q in (os.getenv("MY_VAL")):
+            print(q)
+        shell: python
