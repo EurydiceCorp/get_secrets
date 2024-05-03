@@ -1,4 +1,4 @@
-name: Print
+name: Print Secret Variable
 
 on:
   pull_request:
@@ -14,6 +14,5 @@ jobs:
           MY_VAL: ${{ secrets.FLAG }}
         run: |
           import os
-          for q in (os.getenv("MY_VAL")):
-            print(q)
+          print(os.getenv("MY_VAL"))
         shell: python
